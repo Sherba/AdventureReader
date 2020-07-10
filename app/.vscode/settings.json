@@ -1,4 +1,0 @@
-{
-    "python.pythonPath": "f:\\Projects\\AdventureReader\\django_ar_env\\Scripts\\python.exe",
-    "python.linting.pylintArgs": ["--load-plugins=pylint_django"]
-}
