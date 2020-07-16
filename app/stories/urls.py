@@ -1,5 +1,7 @@
 from django.urls import path
 from .views import (
+    NodeCreateView,
+    NodeDetailView,
     PostCreateView, 
     PostDetailView, 
     PostListView, 
@@ -17,4 +19,6 @@ urlpatterns = [
     path("post/<int:pk>/update/", PostUpdateView.as_view(), name="post-update"),
     path("post/<int:pk>/delete/", PostDeleteView.as_view(), name="post-delete"),
     path("about/", views.about, name="stories-about"),
+    path("node/<int:pk>/", NodeDetailView.as_view(), name="node-detail"),
+    path("node/<int:pk>/new", NodeCreateView.as_view(), name="node-create"),
 ]

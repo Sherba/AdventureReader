@@ -8,7 +8,7 @@ from django.views.generic import (
     ListView,
     UpdateView
 )
-from .models import Post
+from .models import Node, Post
 
 
 class PostListView(ListView):
@@ -68,6 +68,28 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
+class NodeDetailView(DetailView):
+    model = Node
+
+class NodeCreateView(LoginRequiredMixin, CreateView):
+    model = Node
+    fields = ["action", "content"]
+    # shares template with `update view`; <model>_form.html
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+
+        parent = Node.objects.filter(pk=self.kwargs.get("pk")).first()
+        if parent:
+            form.save()
+            form.instance.parent_node = parent
+            form.instance.story = parent.story
+
+            parent.child_nodes.add(form.instance)
+        else:
+            a=3  # TODO: delete this
+
+        return super().form_valid(form)
 
 def about(request):
     return render(request, "stories/about.html", {"title": "About"})

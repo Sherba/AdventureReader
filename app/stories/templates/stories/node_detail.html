@@ -13,18 +13,18 @@
                 </div>
             {% endif %}
         </div>
-        <h2 class="article-title">{{ object.title }}</h2>
-        <p class="article-content">
-            {{ object.content }}
+            <p class="text-muted">Previous Action: {{ object.action }}</p>
+            <p class="article-content">{{ object.content }}</p>
 
-            {% if object.content|length > 0 %}
-                <a class="btn btn-outline-primary ml-1 btn-block" href="{% url 'node-detail' object.first_node.id %}">Begin Story</a>
-            {% else %}
-                <a class="btn btn-outline-primary ml-1 btn-block" href="{% url 'node-detail' object.first_node.id %}">Edit</a>
-            {% endif %}
+            {% for next_node in object.child_nodes.all %}
+                <a class="btn btn-outline-primary ml-1 btn-block" href="{% url 'node-detail' next_node.id %}">{{ next_node.action }}</a>
+            {% endfor %}
             
-        </p>
-
+            {% if object.content|length > 0 %}
+                <a class="btn btn-outline-dark ml-1 btn-block" href="{% url 'node-create' object.id %}">Add New Node</a>
+            {% else %}
+                <a class="btn btn-outline-primary ml-1 btn-block" href="#">Edit</a>
+            {% endif %}
         </div>
     </article>
 {% endblock content %}
