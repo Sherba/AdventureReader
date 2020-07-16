@@ -35,7 +35,7 @@ class PostDetailView(DetailView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ["title", "content"]
+    fields = ["title", "content", "description"]
     # shares template with `update view`; <model>_form.html
 
     def form_valid(self, form):
@@ -44,7 +44,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ["title", "content"]
+    fields = ["title", "content", "description"]
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -80,16 +80,40 @@ class NodeCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
 
         parent = Node.objects.filter(pk=self.kwargs.get("pk")).first()
-        if parent:
-            form.save()
-            form.instance.parent_node = parent
-            form.instance.story = parent.story
 
-            parent.child_nodes.add(form.instance)
-        else:
-            a=3  # TODO: delete this
+        form.save()
+        form.instance.parent_node = parent
+        form.instance.story = parent.story
+
+        parent.child_nodes.add(form.instance)
 
         return super().form_valid(form)
+
+class NodeUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Node
+    fields = ["action", "content"]
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        node = self.get_object()
+
+        if self.request.user == node.author:
+            return True
+        return False
+
+class NodeDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Node
+    success_url = "/"
+
+    def test_func(self):
+        node = self.get_object()
+
+        if self.request.user == node.author:
+            return True
+        return False
 
 def about(request):
     return render(request, "stories/about.html", {"title": "About"})

@@ -8,8 +8,10 @@
             <small class="text-muted">{{ object.date_posted|date:"d F, Y" }}</small>
             {% if object.author == user %}
                 <div>
-                    <a class="btn btn-secondary btn-sm mt-1 mb-1" href = "{% url 'post-update' object.id %}">Update</a>
-                    <a class="btn btn-danger btn-sm mt-1 mb-1" href = "{% url 'post-delete' object.id %}">Delete</a>
+                    {% if not object.child_nodes.all %}
+                        <a class="btn btn-secondary btn-sm mt-1 mb-1" href = "{% url 'node-update' object.id %}">Update</a>
+                        <a class="btn btn-danger btn-sm mt-1 mb-1" href = "{% url 'post-delete' object.id %}">Delete</a>
+                    {% endif %}
                 </div>
             {% endif %}
         </div>
@@ -23,7 +25,7 @@
             {% if object.content|length > 0 %}
                 <a class="btn btn-outline-dark ml-1 btn-block" href="{% url 'node-create' object.id %}">Add New Node</a>
             {% else %}
-                <a class="btn btn-outline-primary ml-1 btn-block" href="#">Edit</a>
+                <a class="btn btn-outline-primary ml-1 btn-block" href="{% url 'node-update' object.id %}">Edit</a>
             {% endif %}
         </div>
     </article>
