@@ -100,6 +100,8 @@ class NodeUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         node = self.get_object()
 
+        if node.child_nodes.all():
+            return False
         if self.request.user == node.author:
             return True
         return False
@@ -111,6 +113,8 @@ class NodeDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         node = self.get_object()
 
+        if node.child_nodes.all():
+            return False
         if self.request.user == node.author:
             return True
         return False
