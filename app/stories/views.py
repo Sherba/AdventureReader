@@ -126,9 +126,10 @@ class GenrePostListView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        genre = get_object_or_404(Genre, name=self.kwargs.get("name"))
+        genre_name = self.kwargs.get("name")
 
-        return Post.objects.filter(genres__name__contains=self.kwargs.get("name")).order_by("-date_posted")
+        # USEFUL: m2m rel -> <m2m_field_name>__<field_to_lookup__contains>
+        return Post.objects.filter(genres__name__contains=genre_name).order_by("-date_posted")
 
 def about(request):
     return render(request, "stories/about.html", {"title": "About"})
