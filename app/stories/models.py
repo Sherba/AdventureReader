@@ -26,8 +26,8 @@ class Post(models.Model):
     description = models.TextField(default="")
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    # rating = models.FloatField() # TODO: add this to another model
     first_node = models.ForeignKey(Node, on_delete=models.SET_NULL, null=True)
+    genres = models.ManyToManyField("Genre")
 
     def __str__(self):
         return self.title
@@ -35,3 +35,9 @@ class Post(models.Model):
     def get_absolute_url(self):
         """Function will be called if `success_url` is not given."""
         return reverse("post-detail", kwargs={"pk": self.pk})
+
+class Genre(models.Model):
+    name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name

@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import (
+    GenrePostListView,
     NodeCreateView,
     NodeDeleteView,
     NodeDetailView,
@@ -25,4 +26,6 @@ urlpatterns = [
     path("node/<int:pk>/new", NodeCreateView.as_view(), name="node-create"),
     path("node/<int:pk>/update", NodeUpdateView.as_view(), name="node-update"),
     path("node/<int:pk>/delete", NodeDeleteView.as_view(), name="node-delete"),
+    path("genre/<str:name>", GenrePostListView.as_view(), name="genre-posts"),
+
 ]

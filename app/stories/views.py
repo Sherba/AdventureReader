@@ -8,7 +8,7 @@ from django.views.generic import (
     ListView,
     UpdateView
 )
-from .models import Node, Post
+from .models import Genre, Node, Post
 
 
 class PostListView(ListView):
@@ -35,7 +35,7 @@ class PostDetailView(DetailView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ["title", "content", "description"]
+    fields = ["title", "content", "description", "genres"]
     # shares template with `update view`; <model>_form.html
 
     def form_valid(self, form):
@@ -44,7 +44,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ["title", "content", "description"]
+    fields = ["title", "content", "description", "genres"]
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -118,6 +118,17 @@ class NodeDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user == node.author:
             return True
         return False
+
+class GenrePostListView(ListView):
+    model = Post
+    template_name = "stories/genre_posts.html"  
+    context_object_name = "posts"
+    paginate_by = 5
+
+    def get_queryset(self):
+        genre = get_object_or_404(Genre, name=self.kwargs.get("name"))
+
+        return Post.objects.filter(genres__name__contains=self.kwargs.get("name")).order_by("-date_posted")
 
 def about(request):
     return render(request, "stories/about.html", {"title": "About"})
