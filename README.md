@@ -20,4 +20,4 @@ Platform for writing and reading interactive stories. All stories are divided in
 ## TODO
 - [ ] Add story depth ( longest possible sequence of nodes )
 - [ ] Add propper profile info, so other users can see someones activity
-- [ ] Add populate_script, for some initial data, so fresh project is easier to go throught
+- [ ] Add populate_script, for some initial data, so fresh project is easier to go through
