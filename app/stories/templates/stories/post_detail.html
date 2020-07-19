@@ -16,7 +16,9 @@
         <h2 class="article-title">{{ object.title }}</h2>
         <p class="article-content">
             {{ object.content }}
-            <a class="btn btn-outline-primary ml-1 btn-block" href="{% url 'node-detail' object.first_node.id %}">Begin Story</a>
+        </p>
+        <p>
+            <a class="btn btn-outline-primary btn-block" href="{% url 'node-detail' object.first_node.id %}">Begin Story</a>
         </p>
 
         </div>

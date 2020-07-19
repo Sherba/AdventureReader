@@ -18,7 +18,7 @@ class Node(models.Model):
 
     def get_absolute_url(self):
         """Function will be called if `success_url` is not given."""
-        return reverse("node-detail", kwargs={"pk": self.parent_node.pk})
+        return reverse("node-detail", kwargs={"pk": self.parent_node.pk if self.parent_node else self.id})
 
 class Post(models.Model):
     title = models.CharField(max_length=100)

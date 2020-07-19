@@ -8,6 +8,7 @@ from django.views.generic import (
     ListView,
     UpdateView
 )
+from .utils import get_story_depth
 from .models import Genre, Node, Post
 
 
@@ -18,6 +19,15 @@ class PostListView(ListView):
     context_object_name = "posts"
     ordering = ["-date_posted"]
     paginate_by = 5
+
+    # TODO: this should be tested, depth should be calculated for paginated posts only
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        for post in context["posts"]:
+            # post.depth = 42  # this is sentinel value; will delete soon
+            post.depth = get_story_depth(post.first_node)
+
+        return context
 
 class UserPostListView(ListView):
     model = Post
