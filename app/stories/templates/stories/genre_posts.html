@@ -11,11 +11,17 @@
             </div>
             <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
             <p class="article-content">{{ post.description }}</p>
-            <div>
+            
+            <div class="float-left">
               {% for genre in post.genres.all %}
                 <a class="btn btn-outline-secondary" href="{% url 'genre-posts' genre.name %}">{{ genre.name }}</a>
               {% endfor %}
             </div>
+
+            <div class="float-right">
+              <p class="article-content mt-1">Story Depth: {{post.depth}}</p>
+            </div>
+
           </div>
         </article>
     {% endfor %}

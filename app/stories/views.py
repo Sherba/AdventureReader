@@ -20,11 +20,9 @@ class PostListView(ListView):
     ordering = ["-date_posted"]
     paginate_by = 5
 
-    # TODO: this should be tested, depth should be calculated for paginated posts only
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         for post in context["posts"]:
-            # post.depth = 42  # this is sentinel value; will delete soon
             post.depth = get_story_depth(post.first_node)
 
         return context
@@ -39,6 +37,13 @@ class UserPostListView(ListView):
         user = get_object_or_404(User, username=self.kwargs.get("username"))
 
         return Post.objects.filter(author=user).order_by("-date_posted")
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        for post in context["posts"]:
+            post.depth = get_story_depth(post.first_node)
+
+        return context
 
 class PostDetailView(DetailView):
     model = Post
@@ -140,6 +145,13 @@ class GenrePostListView(ListView):
 
         # USEFUL: m2m rel -> <m2m_field_name>__<field_to_lookup__contains>
         return Post.objects.filter(genres__name__contains=genre_name).order_by("-date_posted")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        for post in context["posts"]:
+            post.depth = get_story_depth(post.first_node)
+
+        return context
 
 def about(request):
     return render(request, "stories/about.html", {"title": "About"})
