@@ -10,6 +10,7 @@ pip install -r requirements.txt -U
 In `app` folder:
 ```
 python manage.py migrate
+python manage.py loaddata genres.json
 python manage.py runserver
 ```
 
@@ -19,5 +20,4 @@ Platform for writing and reading interactive stories. All stories are divided in
 
 ## TODO
 - [x] Add story depth ( longest possible sequence of nodes )
-- [ ] Add propper profile info, so other users can see someones activity
-- [ ] Add populate_script, for some initial data, so fresh project is easier to go through
+- [x] Add populate_script, for some initial data, so fresh project is easier to go through
